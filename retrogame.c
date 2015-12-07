@@ -310,6 +310,7 @@ int main(int argc, char *argv[]) {
 	// the pull-ups.  Based on GPIO example code by Dom and Gert van
 	// Loo on elinux.org
 
+	/* Since we already have pull-up resistors in the circuit.
 	if((fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0)
 		err("Can't open /dev/mem");
 	gpio = mmap(            // Memory-mapped I/O
@@ -334,7 +335,7 @@ int main(int argc, char *argv[]) {
 	gpio[GPPUD]     = 0;                    // Reset pullup registers
 	gpio[GPPUDCLK0] = 0;
 	(void)munmap((void *)gpio, BLOCK_SIZE); // Done with GPIO mmap()
-
+*/
 
 	// ----------------------------------------------------------------
 	// All other GPIO config is handled through the sysfs interface.
