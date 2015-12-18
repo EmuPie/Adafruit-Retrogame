@@ -113,12 +113,14 @@ struct {
 	// (using HDMI or composite instead), as with our original
 	// retro gaming guide.
 	// Input   Output (from /usr/include/linux/input.h)
-	{  25,     KEY_LEFT     },   // Joystick (4 pins)
-	{   9,     KEY_RIGHT    },
-	{  10,     KEY_UP       },
-	{  17,     KEY_DOWN     },
-	{  23,     KEY_LEFTCTRL },   // A/Fire/jump/primary
-	{   7,     KEY_LEFTALT  },   // B/Bomb/secondary
+	{  17,     KEY_LEFT     },   // Joystick (4 pins)
+	{  18,     KEY_RIGHT    },
+	{  27,     KEY_UP       },
+	{  22,     KEY_DOWN     },
+	{  10,     KEY_A        },   // A/Fire/jump/primary
+	{   9,     KEY_S        },   // B/Bomb/secondary
+	{  25,     KEY_X        },
+        {  11,     KEY_Z        },
 	// For credit/start/etc., use USB keyboard or add more buttons.
 	{  -1,     -1           } }; // END OF LIST, DO NOT CHANGE
 
@@ -133,7 +135,7 @@ struct {
 // Also key auto-repeat times are set here.  This is for navigating the
 // game menu using the 'gamera' utility; MAME disregards key repeat
 // events (as it should).
-const unsigned long vulcanMask = (1L << 6) | (1L << 7);
+const unsigned long vulcanMask = (1L << 6) | (1L << 7) | (1L << 2);
 const int           vulcanKey  = KEY_ESC, // Keycode to send
                     vulcanTime = 1500,    // Pinch time in milliseconds
                     repTime1   = 500,     // Key hold time to begin repeat
@@ -310,7 +312,7 @@ int main(int argc, char *argv[]) {
 	// the pull-ups.  Based on GPIO example code by Dom and Gert van
 	// Loo on elinux.org
 
-	/* Since we already have pull-up resistors in the circuit.
+	// Since we dont have pull-up resistors in the circuit.
 	if((fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0)
 		err("Can't open /dev/mem");
 	gpio = mmap(            // Memory-mapped I/O
@@ -335,7 +337,6 @@ int main(int argc, char *argv[]) {
 	gpio[GPPUD]     = 0;                    // Reset pullup registers
 	gpio[GPPUDCLK0] = 0;
 	(void)munmap((void *)gpio, BLOCK_SIZE); // Done with GPIO mmap()
-*/
 
 	// ----------------------------------------------------------------
 	// All other GPIO config is handled through the sysfs interface.
@@ -384,7 +385,7 @@ int main(int argc, char *argv[]) {
 	// ----------------------------------------------------------------
 	// Set up uinput
 
-#if 1
+#if 0
 	// Retrogame normally uses /dev/uinput for generating key events.
 	// Cupcade requires this and it's the default.  SDL2 (used by
 	// some newer emulators) doesn't like it, wants /dev/input/event0
